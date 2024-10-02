@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "966623132807",
+    "project_id": "material-ba9f6",
+    "storage_bucket": "material-ba9f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966623132807:android:2e3252550fa47b228e8c22",
+        "android_client_info": {
+          "package_name": "com.example.material"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC87c4kWPpk6JNy_zbltumW_qndSeepTV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
