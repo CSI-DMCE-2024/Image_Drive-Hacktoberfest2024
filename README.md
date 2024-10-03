@@ -35,4 +35,5 @@ We welcome contributions to the Scanner App. If you'd like to contribute, please
 2. Create a new branch for your feature or bug fix.
 3. Make your changes and test thoroughly.
 4. Submit a pull request with a clear description of your changes.
+5. NOTE: Please work on the issue only when assigned.
 
