@@ -1,4 +1,4 @@
-package com.example.material.main
+package com.csi.imagedrive.main
 
 import android.content.ContentValues
 import android.content.Intent
@@ -9,8 +9,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.viewpager2.widget.ViewPager2
-import com.example.material.R
-import com.example.material.adapters.tabsadapter
+import com.csi.imagedrive.R
+import com.csi.imagedrive.adapters.tabsadapter
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

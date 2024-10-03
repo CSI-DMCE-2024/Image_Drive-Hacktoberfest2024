@@ -1,4 +1,4 @@
-package com.example.material.main
+package com.csi.imagedrive.main
 
 import android.content.ContentValues
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.Toast
-import com.example.material.R
+import com.csi.imagedrive.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

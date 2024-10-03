@@ -1,12 +1,10 @@
-package com.example.material.main
+package com.csi.imagedrive.main
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.core.app.ActivityCompat
-import com.example.material.R
+import com.csi.imagedrive.R
 
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

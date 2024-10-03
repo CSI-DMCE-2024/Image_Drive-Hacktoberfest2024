@@ -1,4 +1,4 @@
-package com.example.material
+package com.csi.imagedrive
 
 import org.junit.Test
 

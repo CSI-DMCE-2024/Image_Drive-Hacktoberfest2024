@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.material"
+    namespace = "com.csi.imagedrive"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.material"
+        applicationId = "com.csi.imagedrive"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

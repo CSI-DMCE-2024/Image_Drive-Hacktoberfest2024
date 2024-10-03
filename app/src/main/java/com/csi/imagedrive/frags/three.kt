@@ -1,4 +1,4 @@
-package com.example.material.frags
+package com.csi.imagedrive.frags
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.material.R
-import com.example.material.adapters.photos
-import com.example.material.adapters.recycleadapter
+import com.csi.imagedrive.R
+import com.csi.imagedrive.adapters.photos
+import com.csi.imagedrive.adapters.recycleadapter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot

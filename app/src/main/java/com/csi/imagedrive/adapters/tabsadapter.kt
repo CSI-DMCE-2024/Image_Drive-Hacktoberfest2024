@@ -1,12 +1,12 @@
-package com.example.material.adapters
+package com.csi.imagedrive.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.material.frags.one
-import com.example.material.frags.three
-import com.example.material.frags.two
+import com.csi.imagedrive.frags.one
+import com.csi.imagedrive.frags.three
+import com.csi.imagedrive.frags.two
 
 class tabsadapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

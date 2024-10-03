@@ -1,13 +1,8 @@
-package com.example.material.adapters
+package com.csi.imagedrive.adapters
 
 
-import android.content.ContentResolver
-import android.content.ContentValues
-import android.content.Context
 import android.os.Build
 import android.os.Environment
-import android.os.Environment.DIRECTORY_DCIM
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.material.R
+import com.csi.imagedrive.R
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth

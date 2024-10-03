@@ -1,4 +1,4 @@
-package com.example.material.frags
+package com.csi.imagedrive.frags
 
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -17,8 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.material.R
-import com.example.material.main.MainActivity3
+import com.csi.imagedrive.R
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
