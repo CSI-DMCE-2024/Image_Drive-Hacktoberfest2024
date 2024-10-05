@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.material.frags.one
-import com.example.material.frags.three
+import com.example.material.frags.Three
 import com.example.material.frags.two
 
 class tabsadapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
@@ -20,7 +20,7 @@ class tabsadapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         if (position==1)
             return two()
         if (position==2)
-            return three()
+            return Three()
         else
             return one()
 

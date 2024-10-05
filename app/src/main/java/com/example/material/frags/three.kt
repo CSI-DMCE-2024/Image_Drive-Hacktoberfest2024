@@ -7,63 +7,64 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.material.R
+import com.example.material.adapters.Video
 import com.example.material.adapters.photos
-import com.example.material.adapters.recycleadapter
+import com.example.material.adapters.RecycleAdapter
 import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.database
+import com.google.firebase.database.ktx.database
 
-
-class three : Fragment() {
-    lateinit var  Myadapter: recycleadapter
-
+class Three : Fragment() {
+    lateinit var myAdapter: RecycleAdapter
+    val items = ArrayList<Any>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view=inflater.inflate(R.layout.fragment_three, container, false)
-        var photus= ArrayList<photos>()
+        val view = inflater.inflate(R.layout.fragment_three, container, false)
 
-        var uid= FirebaseAuth.getInstance().currentUser?.uid.toString()
+        val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
         Log.w(TAG, "UID:$uid")
         val database = Firebase.database("https://material-ba9f6-default-rtdb.asia-southeast1.firebasedatabase.app/")
-        val myRef = database.getReference("PHOTO").child(uid)
+        val myRef = database.getReference("MEDIA").child(uid)
 
-        val recylce=view.findViewById<RecyclerView>(R.id.recycle)
-        val layoutManager= LinearLayoutManager(context)
-        recylce.layoutManager=layoutManager
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycle)
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
 
-        Myadapter=recycleadapter(photus)
-        recylce.adapter=Myadapter
+        myAdapter = RecycleAdapter(items)
+        recyclerView.adapter = myAdapter
 
-        myRef.addValueEventListener(object: ValueEventListener {
+        myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated
-                photus.clear()
-                for (snapshot in snapshot.children) {
-                    val key=snapshot.key.toString()
-                    val value = snapshot.value.toString()
-                    Log.w(TAG, "VAL:"+value)
-                    photus.add(photos(key,value))
+                items.clear()
+                for (mediaSnapshot in snapshot.children) {
+                    val mediaType = mediaSnapshot.child("type").getValue(String::class.java)
+                    val mediaPath = mediaSnapshot.child("path").getValue(String::class.java)
+                    val mediaUrl = mediaSnapshot.child("url").getValue(String::class.java)
+
+                    if (mediaType == "video") {
+                        items.add(Video(mediaPath!!, mediaUrl!!))
+                    } else if (mediaType == "image") {
+                        items.add(photos(mediaPath!!, mediaUrl!!))
+                    }
                 }
-                Myadapter.notifyDataSetChanged()
-                System.out.println("Hello$photus")
+                myAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Failed to read value.", error.toException())
             }
         })
+
         return view
     }
 }
-
