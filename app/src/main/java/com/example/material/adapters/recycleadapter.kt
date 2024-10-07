@@ -1,12 +1,10 @@
 package com.example.material.adapters
 
-
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.os.Build
 import android.os.Environment
-import android.os.Environment.DIRECTORY_DCIM
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,123 +23,85 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
-import java.io.File
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
+import com.example.material.adapters.photos
 
+class RecycleAdapter(val array: ArrayList<Any>) : RecyclerView.Adapter<RecycleAdapter.ViewHolder>() {
 
-class recycleadapter(val array: ArrayList<photos>): RecyclerView.Adapter<recycleadapter.viewholder>() {
-
-
-    class viewholder(view:View): RecyclerView.ViewHolder(view){
-
+    companion object {
+        const val VIEW_TYPE_IMAGE = 0
+        const val VIEW_TYPE_VIDEO = 1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
-        val view= LayoutInflater.from(parent.context).inflate(R.layout.gallery,parent,false)
-         return viewholder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val imageView: ImageView = view.findViewById(R.id.image)
+        val playerView: PlayerView = view.findViewById(R.id.video_view)
+        val downloadButton: Button = view.findViewById(R.id.button)
+        val deleteButton: ImageView = view.findViewById(R.id.delete)
     }
 
     override fun getItemCount(): Int {
         return array.size
     }
 
-      override fun onBindViewHolder(holder: viewholder, position: Int) {
-        var photo=array.get(position)
-        Picasso.get()
-            .load(photo.photourl)
-            .resize(500, 900)
-           .centerCrop()
-            .into( holder.itemView.findViewById<ImageView>(R.id.image))
+    override fun getItemViewType(position: Int): Int {
+        return when (array[position] is Video) {
+            true -> VIEW_TYPE_VIDEO
+            false -> VIEW_TYPE_IMAGE
+        }
+    }
 
-        val download=holder.itemView.findViewById<Button>(R.id.button)
-        download.setOnClickListener {
-            var uid= FirebaseAuth.getInstance().currentUser?.uid.toString()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutId = if (viewType == VIEW_TYPE_VIDEO) {
+            R.layout.video_item // New layout file for video items
+        } else {
+            R.layout.gallery // Existing layout for images
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        return ViewHolder(view)
+    }
 
-//            val database = Firebase.database("https://material-ba9f6-default-rtdb.asia-southeast1.firebasedatabase.app/")
-//            val myRef = database.getReference("PHOTO").child(uid).child(photo.path)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        when (val item = array[position]) {
+            is photos -> {
+                // Handle displaying images
+                Picasso.get()
+                    .load(item.photourl)
+                    .resize(500, 900)
+                    .centerCrop()
+                    .into(holder.imageView)
 
-            val myRef = com.google.firebase.ktx.Firebase.storage.reference.child(uid).child("IMAGES")
-            val filename=photo.path+"puch.jpg"
+                holder.downloadButton.setOnClickListener {
+                    // Download image functionality
+                }
 
+                holder.deleteButton.setOnClickListener {
+                    // Delete image functionality
+                }
 
-            if (Build.VERSION.SDK_INT==Build.VERSION_CODES.Q)
-            {
-                Toast.makeText(it.context, "SAVED IN APP DATA", Toast.LENGTH_SHORT).show()
-                val dir= it.context.getExternalFilesDir(null)
-                val file = File(dir, filename)
-                Toast.makeText(it.context, photo.path, Toast.LENGTH_SHORT).show()
-
-                myRef.child(photo.path).getFile(file)
-                    .addOnSuccessListener(OnSuccessListener<FileDownloadTask.TaskSnapshot?> {
-                        Log.e("STORAGE_Q", "local tem file created  created ")
-                    })
-                    .addOnFailureListener(
-                        OnFailureListener { exception ->
-                            Log.e(
-                                "firebase ",
-                                ";local tem file not created  created $exception"
-                            )
-                        })
+                holder.playerView.visibility = View.GONE
             }
-            else{
+            is Video -> {
+                // Handle displaying videos
+                holder.playerView.visibility = View.VISIBLE
+                val player = SimpleExoPlayer.Builder(holder.playerView.context).build()
+                holder.playerView.player = player
+                val mediaItem = MediaItem.fromUri(item.videoUrl)
+                player.setMediaItem(mediaItem)
+                player.prepare()
+                player.playWhenReady = false // You can change this as per your requirement
 
-                val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
-                val file = File(directory, filename)
-                Toast.makeText(it.context, photo.path, Toast.LENGTH_SHORT).show()
+                holder.downloadButton.setOnClickListener {
+                    // Download video functionality
+                }
 
-                myRef.child(photo.path).getFile(file)
-                    .addOnSuccessListener(OnSuccessListener<FileDownloadTask.TaskSnapshot?> {
-                        Log.e("STORAGE", " local tem file created  created ")
-                    })
-                    .addOnFailureListener(
-                        OnFailureListener { exception ->
-                            Log.e(
-                                "firebase ",
-                                ";local tem file not created  created $exception"
-                            )
-                        })
+                holder.deleteButton.setOnClickListener {
+                    // Delete video functionality
+                }
             }
         }
-
-
-          val delete=holder.itemView.findViewById<ImageView>(R.id.delete)
-          delete.setOnClickListener{
-
-
-              var uid= FirebaseAuth.getInstance().currentUser?.uid.toString()
-              val name=photo.path
-
-              //deleting from database
-              var realtime =Firebase.database("https://material-ba9f6-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("PHOTO").child(uid).child(name)
-              realtime.removeValue().addOnSuccessListener {
-
-                  //deleting from storage
-                  var myRef = com.google.firebase.ktx.Firebase.storage.reference.child(uid).child(name)
-                  myRef.delete().addOnSuccessListener {
-
-                      Log.e(
-                          "Delete ",
-                          "vachla FIREBASE"
-                      )
-                  }
-              }.addOnFailureListener {
-                 // Toast.makeText(it.context, "DELETED", Toast.LENGTH_SHORT).show()
-                  Log.e(
-                      "Delete ",
-                      "HAGLA FIREBASE"
-                  )
-
-
-              }
-
-
-
-
-
-
-
-
-
-          }
     }
 }
-
